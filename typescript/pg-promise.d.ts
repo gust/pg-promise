@@ -141,12 +141,6 @@ declare module 'pg-promise' {
         tx(tag:any, cb:(t:ITask<Ext>&Ext)=>any):XPromise<any>;
     }
 
-    // Database object in connected state;
-    interface IConnected<Ext> extends IBaseProtocol<Ext> {
-        client: pg.Client;
-        done():void;
-    }
-
     // Additional methods available inside tasks + transactions;
     // API: http://vitaly-t.github.io/pg-promise/Task.html
     interface ITask<Ext> extends IBaseProtocol<Ext> {
@@ -553,11 +547,17 @@ declare module 'pg-promise' {
         var errors:IErrors;
         var as:IFormatting;
 
+        // Database object in connected state;
+        interface IConnected<Ext> extends IBaseProtocol<Ext> {
+            client: pg.Client;
+            done():void;
+        }
+
         // Database full protocol;
         // API: http://vitaly-t.github.io/pg-promise/Database.html
         //
         // We export this interface only to be able to help IntelliSense cast extension types correctly,
-        // which doesn't always work, depending on the version of IntelliSense being used. 
+        // which doesn't always work, depending on the version of IntelliSense being used.
         interface IDatabase<Ext> extends IBaseProtocol<Ext> {
             connect():XPromise<IConnected<Ext>>;
         }
