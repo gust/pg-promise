@@ -275,11 +275,17 @@ declare namespace pgPromise {
     var utils: IUtils;
     var as: IFormatting;
 
+    // Database object in connected state;
+    interface IConnected<Ext> extends IBaseProtocol<Ext> {
+        client: pg.Client;
+        done(): void;
+    }
+
     // Database full protocol;
     // API: http://vitaly-t.github.io/pg-promise/Database.html
     //
     // We export this interface only to be able to help IntelliSense cast extension types correctly,
-    // which doesn't always work, depending on the version of IntelliSense being used. 
+    // which doesn't always work, depending on the version of IntelliSense being used.
     interface IDatabase<Ext> extends IBaseProtocol<Ext> {
         connect(options?: TConnectionOptions): XPromise<IConnected<Ext>>;
 
@@ -372,12 +378,6 @@ declare namespace pgPromise {
         // API: http://vitaly-t.github.io/pg-promise/Database.html#.tx
         tx(cb: (t: ITask<Ext>&Ext) => any): XPromise<any>;
         tx(tag: any, cb: (t: ITask<Ext>&Ext) => any): XPromise<any>;
-    }
-
-    // Database object in connected state;
-    interface IConnected<Ext> extends IBaseProtocol<Ext> {
-        client: pg.Client;
-        done(): void;
     }
 
     // Event context extension for tasks + transactions;
